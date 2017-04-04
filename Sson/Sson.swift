@@ -14,6 +14,7 @@ class Sson : NSObject {
     private let cMirrorForStr = "Mirror for "
     private let cToken = "<>"
     private let cEmptyStr = ""
+    private let kOptional = "Optional"
     
     func fromJson(_ jsonData:Any, classNm:AnyClass) -> Any {
         
@@ -101,7 +102,7 @@ class Sson : NSObject {
     }
     
     private func isContainStrings(_ str:String) -> Bool{
-        if !(str.contains("Optional") || str.contains("String") || str.contains("NSNumber") || str.contains("NSArray") || str.contains("NSDictionary")) {
+        if !(str.contains(kOptional) || str.contains("String") || str.contains("NSNumber") || str.contains("NSArray") || str.contains("NSDictionary")) {
             return true
         }
         return false
