@@ -15,6 +15,10 @@ class Sson : NSObject {
     private let cToken = "<>"
     private let cEmptyStr = ""
     private let kOptional = "Optional"
+    private let kString = "String"
+    private let kNSNumber = "NSNumber"
+    private let kNSArray = "NSArray"
+    private let kNSDictionary = "NSDictionary"
     
     func fromJson(_ jsonData:Any, classNm:AnyClass) -> Any {
         
@@ -102,7 +106,7 @@ class Sson : NSObject {
     }
     
     private func isContainStrings(_ str:String) -> Bool{
-        if !(str.contains(kOptional) || str.contains("String") || str.contains("NSNumber") || str.contains("NSArray") || str.contains("NSDictionary")) {
+        if !(str.contains(kOptional) || str.contains(kString) || str.contains(kNSNumber) || str.contains(kNSArray) || str.contains(kNSDictionary)) {
             return true
         }
         return false
