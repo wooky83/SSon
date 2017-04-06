@@ -19,6 +19,7 @@ class Sson : NSObject {
     private let kNSNumber = "NSNumber"
     private let kNSArray = "NSArray"
     private let kNSDictionary = "NSDictionary"
+    private let kBlank = " "
     
     func fromJson(_ jsonData:Any, classNm:AnyClass) -> Any {
         
@@ -119,7 +120,7 @@ class Sson : NSObject {
     
     private func classNameParsing(_ fullName : String) -> String {
         let pjName = Bundle.main.object(forInfoDictionaryKey: cfBundleName) as! String
-        return pjName.replacingOccurrences(of: " ", with: "_")+"."+fullName
+        return pjName.replacingOccurrences(of: kBlank, with: "_")+"."+fullName
     }
     
 }
