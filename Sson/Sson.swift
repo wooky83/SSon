@@ -10,7 +10,7 @@ import Foundation
 
 class Sson : NSObject {
     
-    private let cfBundleName = "CFBundleName"
+    private let cfBundleExecutable = "CFBundleExecutable"
     private let cMirrorForStr = "Mirror for "
     private let cToken = "<>"
     private let cEmptyStr = ""
@@ -21,90 +21,84 @@ class Sson : NSObject {
     private let kNSDictionary = "NSDictionary"
     private let kBlank = " "
     
-    func fromJson(_ jsonData:Any, classNm:AnyClass) -> Any {
+    required override init() {
+        super.init()
+    }
+    
+    func fromJson(_ jsonData:Any) -> Sson {
         
         let dicData = jsonData as! NSDictionary
         
-        let classIns = classNm as! NSObject.Type
-        let dynamicClass = classIns.init()
-        
-        let reflection = Mirror(reflecting: dynamicClass)
+        let reflection = Mirror(reflecting: self)
         
         if let superClassMirror = reflection.superclassMirror {
             superClassMirror.children.forEach {
                 if let value = dicData[$0.label!] {
-                    dynamicClass.setValue(value, forKey: $0.label!)
+                    self.setValue(value, forKey: $0.label!)
                 }
             }
         }
-    
+        
         reflection.children.filter { $0.label != nil }.forEach {
             let memberName = $0.label!
             
-            
             let valueReflection = Mirror(reflecting: $0.value)
-            
             
             if let pValue = dicData[memberName] {
                 
-                if self.isObjectType(valueReflection.subjectType) {
-                    dynamicClass.setValue(pValue, forKey: memberName)
+                if self.isObjectType(valueReflection.subjectType){
+                    self.setValue(pValue, forKey: memberName)
                 }
                 else {
                     let strArray = valueReflection.description.components(separatedBy: CharacterSet(charactersIn : cToken)).filter { $0.characters.count > 0}.map{ $0.contains(cMirrorForStr) ? $0.replacingOccurrences(of: cMirrorForStr, with: cEmptyStr) : $0 }.filter { self.isContainStrings($0) }
                     
-                    if strArray.count == 1 {
-                        let className = self.classNameParsing(strArray[0])
-                        if let pInstance = NSClassFromString(className) as? NSObject.Type {
-                            let value = self.fromJson(pValue, classNm: pInstance)
-                            dynamicClass.setValue(value, forKey: memberName)
+                    if isDictionary(strArray.count) {
+                        if let pInstance = getDynamicClass(strArray[0]) {
+                            let value = pInstance.fromJson(pValue)
+                            self.setValue(value, forKey: memberName)
                         }
                     }
-                    else if strArray.count > 1{
+                    else if isArray(strArray.count){
                         if let pArray = pValue as? NSArray {
                             var newArray = Array<AnyObject>()
                             pArray.forEach {
-                                let className = self.classNameParsing(strArray[1])
-                                if let pInstance = NSClassFromString(className) as? NSObject.Type {
-                                    let value = self.fromJson($0, classNm: pInstance)
+                                if let pInstance = getDynamicClass(strArray[1]) {
+                                    let value = pInstance.fromJson($0)
                                     newArray.append(value as AnyObject)
                                 }
                             }
-                            dynamicClass.setValue(newArray, forKey: memberName)
+                            self.setValue(newArray, forKey: memberName)
                         }
-                        
                     }
                 }
-                
             }
         }
         
-        return dynamicClass
+        return self
     }
     
-    func toJson(_ insClass:AnyObject) -> Any {
-        
-        let dicData = NSMutableDictionary()
-        
-        let reflection = Mirror(reflecting: insClass)
-        
-        reflection.children.forEach {
-            let memberName = $0.label!
-            
-            if let pValue = insClass.value(forKey: memberName){
-                let className = self.classNameParsing(memberName)
-                if let _ = NSClassFromString(className) as? NSObject.Type {
-                    let recursiveIns = self.toJson(pValue as AnyObject)
-                    dicData[memberName] = recursiveIns
-                }
-                else {
-                    dicData[memberName] = pValue
-                }
-            }
-        }
-        
-        return dicData
+    private func isDictionary(_ cnt: Int) -> Bool {
+        return cnt == 1
     }
+    
+    private func isArray(_ cnt: Int) -> Bool {
+        return cnt > 1
+    }
+    
+    private func getDynamicClass(_ className : String) -> Sson? {
+        let className = classNameParsing(className)
+        
+        if let dynamicClass = NSClassFromString(className) as? Sson.Type {
+            
+            let beanClass = dynamicClass.init()
+            
+            return beanClass
+        }
+        else {
+            return nil
+        }
+    }
+    
     
     private func isContainStrings(_ str:String) -> Bool{
         if !(str.contains(kOptional) || str.contains(kString) || str.contains(kNSNumber) || str.contains(kNSArray) || str.contains(kNSDictionary)) {
@@ -114,13 +108,12 @@ class Sson : NSObject {
     }
     
     private func isObjectType(_ type: Any.Type) -> Bool{
-        let isContain = type == String.self || type == String?.self || type == NSNumber.self || type == NSNumber?.self || type == NSArray.self || type == NSArray?.self || type == NSDictionary.self || type == NSDictionary?.self ? true : false
-        return isContain
+        return type == String.self || type == String?.self || type == NSNumber.self || type == NSNumber?.self || type == NSArray.self || type == NSArray?.self || type == NSDictionary.self || type == NSDictionary?.self || type == Int.self || type == Int?.self || type == Int64.self || type == Int64?.self || type == Bool.self || type == Bool?.self
     }
     
     private func classNameParsing(_ fullName : String) -> String {
-        let pjName = Bundle.main.object(forInfoDictionaryKey: cfBundleName) as! String
-        return pjName.replacingOccurrences(of: kBlank, with: "_")+"."+fullName
+        let pjName = Bundle.main.object(forInfoDictionaryKey: cfBundleExecutable) as? String ?? ""
+        return pjName+"."+fullName
     }
     
 }
