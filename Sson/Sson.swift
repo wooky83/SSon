@@ -7,7 +7,8 @@
 //
 
 /**
- * 지원 타입 = String, String?, Int, Int64, Bool, Array, Array?, Dictionary, Dictionary?, NSArray, NSArray?, NSDictionary, NSDictionary?
+ * 필수 Variable에 꼭 @objc 붙일것 -> @objc var text: String?          (Swift 4.0이상에선 필수)
+ * 지원 타입 = String, String?, Int, Int64, Bool, NSArray, NSArray?, NSDictionary, NSDictionary?
  * 사용 금지 타입 = Int?, Int64?, Bool? (Objective-C -> Swift 타입으로 변경시 KVC 에러 발생)
 **/
 
@@ -16,16 +17,16 @@ import Foundation
 class Sson: NSObject {
     
     private enum SsonConst {
-        static let cfBundleExecutable = "CFBundleExecutable"
-        static let cMirrorForStr = "Mirror for "
-        static let cToken = "<>"
-        static let cEmptyStr = ""
-        static let kOptional = "Optional"
-        static let kString = "String"
-        static let kNSNumber = "NSNumber"
-        static let kNSArray = "NSArray"
-        static let kNSDictionary = "NSDictionary"
-        static let kBlank = " "
+        static let bundleExecutable = "CFBundleExecutable"
+        static let mirrorForStr = "Mirror for "
+        static let token = "<>"
+        static let emptyStr = ""
+        static let optional = "Optional"
+        static let string = "String"
+        static let nSNumber = "NSNumber"
+        static let nSArray = "NSArray"
+        static let nSDictionary = "NSDictionary"
+        static let blank = " "
     }
     
     required override init() {
@@ -57,7 +58,7 @@ class Sson: NSObject {
                     self.setValue(pValue, forKey: memberName)
                 }
                 else {
-                    let strArray = valueReflection.description.components(separatedBy: CharacterSet(charactersIn : SsonConst.cToken)).filter { $0.characters.count > 0}.map{ $0.contains(SsonConst.cMirrorForStr) ? $0.replacingOccurrences(of: SsonConst.cMirrorForStr, with: SsonConst.cEmptyStr) : $0 }.filter { self.isContainStrings($0) }
+                    let strArray = valueReflection.description.components(separatedBy: CharacterSet(charactersIn : SsonConst.token)).filter { $0.count > 0}.map{ $0.contains(SsonConst.mirrorForStr) ? $0.replacingOccurrences(of: SsonConst.mirrorForStr, with: SsonConst.emptyStr) : $0 }.filter { self.isContainStrings($0) }
                     
                     if isDictionary(strArray.count) {
                         if let pInstance = getDynamicClass(strArray[0]) {
@@ -107,7 +108,7 @@ class Sson: NSObject {
     }
     
     private func isContainStrings(_ str: String) -> Bool{
-        if !(str.contains(SsonConst.kOptional) || str.contains(SsonConst.kString) || str.contains(SsonConst.kNSNumber) || str.contains(SsonConst.kNSArray) || str.contains(SsonConst.kNSDictionary)) {
+        if !(str.contains(SsonConst.optional) || str.contains(SsonConst.string) || str.contains(SsonConst.nSNumber) || str.contains(SsonConst.nSArray) || str.contains(SsonConst.nSDictionary)) {
             return true
         }
         return false
@@ -118,8 +119,12 @@ class Sson: NSObject {
     }
     
     private func classNameParsing(_ fullName: String) -> String {
-        let pjName = Bundle.main.object(forInfoDictionaryKey: SsonConst.cfBundleExecutable) as? String ?? ""
+        let pjName = Bundle.main.object(forInfoDictionaryKey: SsonConst.bundleExecutable) as? String ?? ""
         return pjName+"."+fullName
+    }
+    
+    override func setValue(_ value: Any?, forUndefinedKey key: String) {
+        print("key(\(key)) is not existence")
     }
     
 }

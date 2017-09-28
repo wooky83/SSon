@@ -13,6 +13,7 @@
 		3C932E491E4AD7BB00AED69F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3C932E481E4AD7BB00AED69F /* Assets.xcassets */; };
 		3C932E4C1E4AD7BB00AED69F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3C932E4A1E4AD7BB00AED69F /* LaunchScreen.storyboard */; };
 		3C932E541E4AD80600AED69F /* Sson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C932E531E4AD80600AED69F /* Sson.swift */; };
+		3CF3EAB11F7C8C1F000F1664 /* TestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF3EAB01F7C8C1F000F1664 /* TestModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		3C932E4B1E4AD7BB00AED69F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3C932E4D1E4AD7BB00AED69F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3C932E531E4AD80600AED69F /* Sson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sson.swift; sourceTree = "<group>"; };
+		3CF3EAB01F7C8C1F000F1664 /* TestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 		3C932E401E4AD7BB00AED69F /* Sson */ = {
 			isa = PBXGroup;
 			children = (
+				3CF3EAAF1F7C8C06000F1664 /* Sample */,
 				3C932E531E4AD80600AED69F /* Sson.swift */,
 				3C932E411E4AD7BB00AED69F /* AppDelegate.swift */,
 				3C932E431E4AD7BB00AED69F /* ViewController.swift */,
@@ -65,6 +68,14 @@
 				3C932E4D1E4AD7BB00AED69F /* Info.plist */,
 			);
 			path = Sson;
+			sourceTree = "<group>";
+		};
+		3CF3EAAF1F7C8C06000F1664 /* Sample */ = {
+			isa = PBXGroup;
+			children = (
+				3CF3EAB01F7C8C1F000F1664 /* TestModel.swift */,
+			);
+			path = Sample;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -143,6 +154,7 @@
 				3C932E541E4AD80600AED69F /* Sson.swift in Sources */,
 				3C932E441E4AD7BB00AED69F /* ViewController.swift in Sources */,
 				3C932E421E4AD7BB00AED69F /* AppDelegate.swift in Sources */,
+				3CF3EAB11F7C8C1F000F1664 /* TestModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,7 +293,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = wooky.Sson;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
@@ -294,7 +306,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = wooky.Sson;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
