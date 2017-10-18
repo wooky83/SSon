@@ -8,14 +8,14 @@
 
 import Foundation
 
-class TestModel: Sson {
-    @objc var pa: Int = -1
-    @objc var pb: Bool = false
-    @objc var pc: String = ""
-    @objc var pd: String?
-    @objc var pe: SubTestModel?
-    @objc var pf: [SubTestModel]?
-    @objc var pg: NSArray?
+@objcMembers class TestModel: Sson {
+    var pa: Int = -1
+    var pb: Bool = false
+    var pc: String = ""
+    var pd: String?
+    var pe: SubTestModel?
+    var pf: [SubTestModel]?
+    var pg: NSArray?
 }
 
 class SubTestModel: Sson {

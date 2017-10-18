@@ -1,13 +1,13 @@
 //
 //  Sson.swift
-//  NetTest
+//  Swift JSON
 //
 //  Created by baw0803 on 2017. 1. 18..
 //  Copyright © 2017년 WookyNim. All rights reserved.
 //
 
 /**
- * 필수 Variable에 꼭 @objc 붙일것 -> @objc var text: String?          (Swift 4.0이상에선 필수)
+ * 필수 Variable에 꼭 @objc 붙일것 -> @objc var text: String?  or @objcMembers         (Swift 4.0이상에선 필수)
  * 지원 타입 = String, String?, Int, Int64, Bool, NSArray, NSArray?, NSDictionary, NSDictionary?
  * 사용 금지 타입 = Int?, Int64?, Bool? (Objective-C -> Swift 타입으로 변경시 KVC 에러 발생)
 **/
