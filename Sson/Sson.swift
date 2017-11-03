@@ -58,12 +58,15 @@ class Sson: NSObject {
                     self.setValue(pValue, forKey: memberName)
                 }
                 else {
-                    let strArray = valueReflection.description.components(separatedBy: CharacterSet(charactersIn : SsonConst.token)).filter { $0.count > 0}.map{ $0.contains(SsonConst.mirrorForStr) ? $0.replacingOccurrences(of: SsonConst.mirrorForStr, with: SsonConst.emptyStr) : $0 }.filter { self.isContainStrings($0) }
+                    let strArray = valueReflection.description.components(separatedBy: CharacterSet(charactersIn : SsonConst.token)).filter { !($0.isEmpty)}.map{ $0.contains(SsonConst.mirrorForStr) ? $0.replacingOccurrences(of: SsonConst.mirrorForStr, with: SsonConst.emptyStr) : $0 }.filter { self.isContainStrings($0) }
                     
                     if isDictionary(strArray.count) {
                         if let pInstance = getDynamicClass(strArray[0]) {
                             let value = pInstance.fromJson(pValue)
                             self.setValue(value, forKey: memberName)
+                        }
+                        else {
+                            self.setValue(pValue, forKey: memberName)
                         }
                     }
                     else if isArray(strArray.count){
@@ -73,6 +76,9 @@ class Sson: NSObject {
                                 if let pInstance = getDynamicClass(strArray[1]) {
                                     let value = pInstance.fromJson($0)
                                     newArray.append(value as AnyObject)
+                                }
+                                else {
+                                    newArray.append($0 as AnyObject)
                                 }
                             }
                             self.setValue(newArray, forKey: memberName)

@@ -8,10 +8,15 @@
 
 import Foundation
 
-@objcMembers class TestModel: Sson {
+@objcMembers class superModel: Sson {
+    var pc: String = ""
+}
+
+
+@objcMembers class TestModel: superModel {
     var pa: Int = -1
     var pb: Bool = false
-    var pc: String = ""
+    //var pc: String = ""
     var pd: String?
     var pe: SubTestModel?
     var pf: [SubTestModel]?

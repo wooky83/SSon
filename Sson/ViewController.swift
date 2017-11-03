@@ -18,7 +18,7 @@ class ViewController: UIViewController {
         {
             "pa": 1,
             "pb": true,
-            "pc": "hi",
+            "pc": "superClassVariable",
             "pd": "nike",
             "pe": {
             "sa": 3,
@@ -43,9 +43,10 @@ class ViewController: UIViewController {
         let data = jsonString.data(using: .utf8)
         do {
             let jsonDic = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as! NSDictionary
-            print(jsonDic)
             let test = TestModel()
             _ = test.fromJson(jsonDic)
+            print(test.description)
+            print(test.pc)
         }
         catch let error as NSError {
             print(error)
