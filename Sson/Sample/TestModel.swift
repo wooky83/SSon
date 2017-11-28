@@ -21,6 +21,7 @@ import Foundation
     var pe: SubTestModel?
     var pf: [SubTestModel]?
     var pg: NSArray?
+    var ph: UInt64 = 0
 }
 
 class SubTestModel: Sson {

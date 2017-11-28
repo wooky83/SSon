@@ -121,7 +121,7 @@ class Sson: NSObject {
     }
     
     private func isObjectType(_ type: Any.Type) -> Bool{
-        return type == String.self || type == String?.self || type == NSNumber.self || type == NSNumber?.self || type == NSArray.self || type == NSArray?.self || type == NSDictionary.self || type == NSDictionary?.self || type == Int.self || type == Int?.self || type == Int64.self || type == Int64?.self || type == Bool.self || type == Bool?.self
+        return type == String.self || type == String?.self || type == NSNumber.self || type == NSNumber?.self || type == NSArray.self || type == NSArray?.self || type == NSDictionary.self || type == NSDictionary?.self || type == Int.self || type == Int64.self || type == Bool.self || type == UInt.self || type == UInt64.self
     }
     
     private func classNameParsing(_ fullName: String) -> String {
