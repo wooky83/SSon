@@ -33,9 +33,9 @@ class Sson: NSObject {
         super.init()
     }
     
-    func fromJson(_ jsonData:Any) -> Sson {
+    func fromJson<T>(_ jsonData: T) -> Sson {
         
-        let dicData = jsonData as! NSDictionary
+        guard let dicData = jsonData as? NSDictionary else {return self}
         
         let reflection = Mirror(reflecting: self)
         
@@ -133,5 +133,18 @@ class Sson: NSObject {
         print("key(\(key)) is not existence")
     }
     
+}
+
+struct DecodingHelper: Decodable {
+    private let decoder: Decoder
+    
+    init(from decoder: Decoder) throws {
+        self.decoder = decoder
+    }
+    
+    func decode(to type: Decodable.Type) throws -> Decodable {
+        let decodable = try type.init(from: decoder)
+        return decodable
+    }
 }
 

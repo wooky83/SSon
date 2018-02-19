@@ -8,25 +8,25 @@
 
 import Foundation
 
-@objcMembers class superModel: Sson {
-    var pc: String = ""
+
+@objcMembers class SModel: Sson {
+    var name: String = ""
+    var year: Int = -1
+    var hobby: [SSModel]?
 }
 
-
-@objcMembers class TestModel: superModel {
-    var pa: Int = -1
-    var pb: Bool = false
-    //var pc: String = ""
-    var pd: String?
-    var pe: SubTestModel?
-    var pf: [SubTestModel]?
-    var pg: NSArray?
-    var ph: UInt64 = 0
+class SSModel: Sson {
+    @objc var kind: String?
+    @objc var star: Int = -1
 }
 
-class SubTestModel: Sson {
-    @objc var sa: Int = -1
-    @objc var sb: Bool = false
-    @objc var sc: String = ""
-    @objc var sd: String?
+struct DModel: Decodable {
+    let name: String
+    let year: Int
+    let hobby: [DSModel]
+}
+
+struct DSModel: Decodable {
+    let kind: String
+    let star: Int
 }

@@ -9,56 +9,59 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        let jsonString = """
-        {
-            "pa": 1,
-            "pb": true,
-            "pc": "superClassVariable",
-            "ph": 1512451785518,
-            "pd": "nike",
-            "pe": {
-            "sa": 3,
-            "sb": true,
-            "sc": "sub",
-            "sd": "type"
-            },
-            "pf": [{
-            "sa": 5,
-            "sb": true,
-            "sc": "s",
-            "sd": "type"
-            }, {
-            "sa": 6,
-            "sb": true,
-            "sc": "b",
-            "sd": "type"
-            }],
-             "pg": ["1", "2", "3", "4", "5"]
-        }
-        """
-        let data = jsonString.data(using: .utf8)
+        let data = makeTestJosn()
+        
+        print(String(describing: testJson(data, model: DModel.self)))
+        print(String(describing: testJson(data, model: SModel.self)))
+    }
+    
+    private func testJson<T>(_ data: Data, model: T.Type) -> T?  {
         do {
-            let jsonDic = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as! NSDictionary
-            let test = TestModel()
-            _ = test.fromJson(jsonDic)
-            print(test.description)
-            print(test.pc)
+            if let md = model as? Decodable.Type {
+                let decodingHelper = try JSONDecoder().decode(DecodingHelper.self, from: data)
+                let decodable = try decodingHelper.decode(to: md)
+                return decodable as? T
+            }
+            else if let md = model as? Sson.Type{
+                let jsonDic = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as! NSDictionary
+                let test = md.init()
+                _ = test.fromJson(jsonDic)
+                return test as? T
+            }
         }
         catch let error as NSError {
             print(error)
         }
+        return nil
     }
-
+    
+    private func makeTestJosn() -> Data{
+        let jsonString = """
+        {
+            "name": "kwon",
+            "year": 1983,
+            "hobby": [{
+                "kind": "baseball",
+                "star": 9
+                }, {
+                "kind": "snowboard",
+                "star": 7
+            }]
+        }
+        """
+        return jsonString.data(using: .utf8) ?? Data()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-
+    
+    
 }
 
